@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" >
+
+<head>
+  <meta charset="UTF-8">
+  <title>琴鍵 - 錄音 / 播放</title>
+  
+  <link rel='stylesheet prefetch' href='https://use.fontawesome.com/releases/v5.0.0/css/all.css'>
+  <link rel="stylesheet" href="css/style.css">
+
+</head>
+
+<body>
+
+<div id="piano">
+  <div class="audio" v-for="sound in soundData">
+    <audio controls="controls" v-bind:data-num="sound.number"> 
+      <source v-bind:src="sound.url" type="audio/wav"/>
+    </audio>
+  </div>
+  <div class="pianoBox">
+    <h1>Play The Piano</h1>
+    <p> “ The piano keys are black and white but they sound like a million colors in your mind. ” <br>– Maria Cristina Mena</p>
+    <div class="keyboard">
+      <div class="pianokey" v-for="keys in pianoKeys">
+        <div class="white" v-if="keys.type === 'white'" v-on:click="soundPlay(keys.num, 1)" v-bind:class="currentPlayNote(keys.num, keys.key)? 'playing':''"> 
+          <div class="txt">{{String.fromCharCode(keys.key)}}</div>
+        </div>
+        <div class="black" v-if="keys.type === 'black'" v-on:click="soundPlay(keys.num, 1)" v-bind:class="currentPlayNote(keys.num, keys.key)? 'playing':''">
+          <div class="txt2">{{String.fromCharCode(keys.key)}}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="musicNotes">
+    <ul class="notesmenu" v-if="notes.length &gt; 0">
+      <li v-for="(note,id) in notes" v-bind:class="nowNote == id+1? 'playing':''">
+        <div class="num">{{note.num}}</div>
+        <div class="time">{{note.time}}</div>
+      </li>
+    </ul>
+  </div>
+  <div class="btnBox">
+    <button class="sample1" v-on:click="sampleNotes1()">歡樂頌</button>
+    <button class="sample2" v-on:click="sampleNotes2()">小星星</button>
+    <button class="play" v-on:click="startPlay()" v-if="playingTime &lt;= 0">播放音樂<span class="fas fa-play-circle"></span></button>
+    <button class="stop" v-on:click="stopPlay()" v-if="playingTime &gt; 0">暫停音樂<span class="fas fa-pause-circle"></span></button>
+    <button class="startRc" v-on:click="startRecord()" v-if="recordTime &lt;= 0">錄製樂曲<span class="fas fa-circle"></span></button>
+    <button class="stopRc" v-on:click="stopRecord()" v-if="recordTime &gt; 0">錄製完畢<span class="fas fa-stop-circle"></span></button>
+    <button class="clear" v-on:click="clearNotes()">清空譜面</button>
+  </div>
+  <h3 class="timing">{{playingTime + recordTime}}</h3>
+</div>
+
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.3/vue.min.js'></script>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>
+  <script  src="js/index.js"></script>
+
+</body>
+
+</html>
